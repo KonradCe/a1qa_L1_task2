@@ -16,10 +16,11 @@ class Singleton(type):
             return self.__instance
 
 
-# This feels a bit 'hacky' but I don't know how get a new driver for every page in more elegant manner
+# This feels a bit 'hacky' but I don't know how get a new driver for every page in more elegant manner.
+# (This could probably be solved by implementing Browser Factory)
 class SingletonWebDriver(metaclass=Singleton):
-    def __init__(self, parameters=None):
-        self.driver = self.create_new_driver(parameters)
+    def __init__(self):
+        self.__driver = None
 
     @staticmethod
     def create_new_driver(parameters):
@@ -31,10 +32,10 @@ class SingletonWebDriver(metaclass=Singleton):
             service=ChromeService(ChromeDriverManager().install()), options=options
         )
 
-    # Method to call when you want to start with a new "clean" driver
-    def refresh_driver(self, parameters=None):
-        self.driver.quit()
-        self.driver = self.create_new_driver(parameters)
+    def get_driver(self, parameters=None):
+        if self.__driver is None:
+            self.__driver = self.create_new_driver(parameters)
+        return self.__driver
 
-    def get_driver(self):
-        return self.driver
+    def unassign_driver(self):
+        self.__driver = None

@@ -7,10 +7,11 @@ from singletonWebDriver import SingletonWebDriver
 
 @pytest.fixture()
 def driver_setup_teardown():
-    chrome_parameters = utility_methods.get_chrome_parameters()
-    driver = SingletonWebDriver(chrome_parameters).driver
+    chrome_parameters = utility_methods.get_chrome_parameters_data()
+    driver = SingletonWebDriver().get_driver(chrome_parameters)
     yield driver
     driver.quit()
+    SingletonWebDriver().unassign_driver()
 
 
 def test_case1(driver_setup_teardown):
@@ -39,6 +40,42 @@ def test_case1(driver_setup_teardown):
     assert store_page.is_unique_element_present(), error_message_step4
 
 
+def test_case2(driver_setup_teardown):
+    driver = driver_setup_teardown
+    # STEP1 - Navigate to store page -> store page is open
+    store_page = pages.storePage.StorePage(driver)
+    error_message_step1 = "opening store page should result in store page being open"
+    assert store_page.is_unique_element_present(), error_message_step1
+
+    # STEP2 - Move pointer to 'New & Noteworthy' at page's menu. Using explicit waits wait until popup menu shows up.
+    # Click 'Top Sellers' option in that menu -> Page with Top Sellers products is open
+    top_sellers_page = store_page.click_on_topsellers_from_noteworthy_pulldown()
+    error_message_step2 = (
+        "opening top sellers page should result in top sellers page being open"
+    )
+    assert top_sellers_page.is_unique_element_present(), error_message_step2
+
+    # STEP3 - In menu on the right choose 'Action', 'LAN Co-op' and 'SteamOS + Linux' checkboxes ->
+    # All three checkboxes are checked
+    # Number of results matching your search equals to number of games in games list
+    top_sellers_page.display_all_checkboxes()
+    checkboxes = utility_methods.get_filter_checkboxes_data()
+    top_sellers_page.check_proper_checkboxes(checkboxes)
+    error_message_step3a = "not all required checkboxes were checked"
+    assert set((top_sellers_page.get_data_values_of_checked_checkboxes())).issubset(
+        set(checkboxes.values())
+    ), error_message_step3a
+
+    print(top_sellers_page.get_number_of_results())
+    print(top_sellers_page.count_number_of_results())
+    assert (
+        top_sellers_page.get_number_of_results()
+        == top_sellers_page.count_number_of_results()
+    )
+
+
 if __name__ == "__main__":
-    for d in driver_setup_teardown():
-        test_case1(d)
+    main_driver = SingletonWebDriver().get_driver(
+        utility_methods.get_chrome_parameters_data()
+    )
+    test_case2(main_driver)

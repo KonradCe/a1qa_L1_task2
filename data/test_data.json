@@ -1,2 +1,7 @@
 {
+  "filter_checkbox_data_values": {
+    "Action": "19",
+    "LAN Co-op": "48",
+    "SteamOS + Linux": "linux"
+  }
 }
