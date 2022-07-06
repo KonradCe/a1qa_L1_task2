@@ -1,3 +1,4 @@
 {
-  "chrome_options": ["--incognito", "--lang=en-US", "--start-maximized"]
+  "chrome_options": ["--incognito", "--lang=en-US", "--start-maximized"],
+  "explicit_wait_time": 10
 }

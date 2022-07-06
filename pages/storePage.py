@@ -1,15 +1,16 @@
-from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.ui import WebDriverWait
+
+import utility_methods
 
 
 class StorePage:
     def __init__(self, driver):
-        self.URL = "https://store.steampowered.com/"
-        self.driver = driver
-        # TODO: driver going to page should not be here
-        self.driver.get(self.URL)
+        self.driver: WebDriver = driver
+        self.wait_time = utility_methods.get_wait_time_data()
 
         self.about_btn_loc = "//div[@id='global_header']//a[contains(@href,'about') and @class='menuitem']"
         self.unique_element_loc = "//div[@class='home_page_content']"
@@ -42,7 +43,7 @@ class StorePage:
         )
         hover_over_new_and_noteworthy.perform()
 
-        wait = WebDriverWait(self.driver, 10)
+        wait = WebDriverWait(self.driver, self.wait_time)
         topsellers_btn = wait.until(
             ec.element_to_be_clickable((By.XPATH, self.topsellers_btn_loc))
         )
