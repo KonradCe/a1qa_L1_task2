@@ -1,7 +1,7 @@
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 import utility_methods
@@ -28,7 +28,7 @@ class StorePage:
         about_page_btn = self.driver.find_element(By.XPATH, self.about_btn_loc)
         about_page_btn.click()
 
-        # Import statement has to be here (and not in the top) to avoid circular dependency; I suspect adding models would resolve this issue
+        # Import statement has to be here (and not at the top) to avoid circular dependency;
         from pages.aboutPage import AboutPage
 
         return AboutPage(self.driver)
@@ -45,7 +45,7 @@ class StorePage:
 
         wait = WebDriverWait(self.driver, self.wait_time)
         topsellers_btn = wait.until(
-            ec.element_to_be_clickable((By.XPATH, self.topsellers_btn_loc))
+            EC.element_to_be_clickable((By.XPATH, self.topsellers_btn_loc))
         )
         topsellers_btn.click()
 

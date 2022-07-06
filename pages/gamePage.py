@@ -15,9 +15,12 @@ class GamePage:
         )
 
     def is_unique_element_present(self):
-        return len(self.driver.find_elements(By.XPATH, self.unique_element_loc)) > 0
+        unique_element_list = self.driver.find_elements(
+            By.XPATH, self.unique_element_loc
+        )
+        return len(unique_element_list) > 0
 
-    def get_game_data(self) -> dict():
+    def get_game_data(self) -> dict:
         game_title = self.driver.find_element(By.XPATH, self.game_title_loc).text
         game_release_date = self.driver.find_element(
             By.XPATH, self.game_release_date_loc

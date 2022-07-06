@@ -1,7 +1,7 @@
 import pytest
-import pages
-import pages.storePage
+
 import utility_methods
+from pages.storePage import StorePage
 from singletonWebDriver import SingletonWebDriver
 
 
@@ -12,18 +12,18 @@ def driver_setup_teardown():
     driver.get("https://store.steampowered.com/")
     yield driver
     driver.quit()
-    SingletonWebDriver().unassign_driver()
+    SingletonWebDriver.unassign_driver()
 
 
 def test_case1(driver_setup_teardown):
     driver = driver_setup_teardown
 
     # STEP1: Navigate to store page -> store page is open
-    store_page = pages.storePage.StorePage(driver)
+    store_page = StorePage(driver)
     error_message_step1 = "opening store page should result in store page being open"
     assert store_page.is_unique_element_present(), error_message_step1
 
-    # STEP2: Click on ABOUT button	-> About page is open
+    # STEP2: Click on ABOUT button -> About page is open
     about_page = store_page.click_on_about_btn()
     error_message_step2 = "opening about page should result in about page being open"
     assert about_page.is_unique_element_present(), error_message_step2
@@ -46,7 +46,7 @@ def test_case2(driver_setup_teardown):
     driver = driver_setup_teardown
 
     # STEP1: Navigate to store page -> store page is open
-    store_page = pages.storePage.StorePage(driver)
+    store_page = StorePage(driver)
     error_message_step1 = "opening store page should result in store page being open"
     assert store_page.is_unique_element_present(), error_message_step1
 

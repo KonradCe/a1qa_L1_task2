@@ -1,8 +1,8 @@
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 import utility_methods
 
@@ -15,18 +15,23 @@ class TopSellersPage:
         # Locators relaying on text are not the best practice, but I could not find a better way,
         # especially since the site is so similar to https://store.steampowered.com/search/?term=
         self.unique_element_loc = (
-            "//h2[contains(text(), Top) and contains(text(), Sellers)]"
+            "//h2[contains(text(), 'Top') and contains(text(), 'Sellers')]"
         )
         self.collapsed_category_headers_loc = (
             "//div[contains(@class, 'block_content_inner') and contains(@style, 'none')]"
             "//preceding-sibling::div[@data-panel]"
         )
+        self.checked_checkboxes_loc = "//span[contains(@class, 'checked')]"
         self.search_result_text_loc = "//div[@class='search_results_count']"
         self.search_result_rows_loc = "//div[@id='search_resultsRows']//child::a"
+
+        # What a nice variable name!
         # In all seriousness I just wanted to emphasize the logic behind the locator -
         # - when the container is still loading search results, it contains attribute style=opacity:0.5,
         # so when this attribute disappears, it means the search results are ready
-        self.search_result_container_not_in_loading_state_loc = "//div[@id='search_result_container' and not(@style)]"  # What a nice variable name!
+        self.search_result_container_not_in_loading_state_loc = (
+            "//div[@id='search_result_container' and not(@style)]"
+        )
         self.first_game_in_search_results_loc = "//div[@id='search_resultsRows']/a[1]"
 
     def is_unique_element_present(self):
@@ -41,7 +46,7 @@ class TopSellersPage:
         )
         # Unraveling categories from top to bottom, causes every category below the one being unravelled to move down.
         # As a result the remaining clicks do not hit their targets, which throws an error. By reversing the list, we
-        # unravel from the bottom to the top, which do not couses any shifts in the layout of categories yet to be clicked.
+        # unravel from the bottom to the top, which does not cause any shifts in the layout of categories yet to be clicked.
         category_headers_to_click.reverse()
         for header in category_headers_to_click:
             wait = WebDriverWait(self.driver, self.wait_time)
@@ -55,8 +60,9 @@ class TopSellersPage:
             self.driver.find_element(By.XPATH, chk_loc).click()
 
     def get_data_values_of_checked_checkboxes(self):
-        checked_checkboxes_loc = "//span[contains(@class, 'checked')]"
-        checked_checkboxes = self.driver.find_elements(By.XPATH, checked_checkboxes_loc)
+        checked_checkboxes = self.driver.find_elements(
+            By.XPATH, self.checked_checkboxes_loc
+        )
         return [element.get_attribute("data-value") for element in checked_checkboxes]
 
     def get_number_of_results(self):
@@ -119,6 +125,7 @@ class TopSellersPage:
             By.XPATH, self.first_game_in_search_results_loc
         )
         first_game_from_search_results.click()
+        # Import statement has to be here (and not at the top) to avoid circular dependency;
         from pages.gamePage import GamePage
 
         return GamePage(self.driver)

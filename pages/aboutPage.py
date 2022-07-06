@@ -33,7 +33,7 @@ class AboutPage:
     def click_on_store_btn(self):
         store_button = self.driver.find_element(By.XPATH, self.store_btn_loc)
         store_button.click()
-        # Import statement has to be here (and not in the top) to avoid circular dependency; I suspect adding models would resolve this issue
+        # Import statement has to be here (and not at the top) to avoid circular dependency
         from pages.storePage import StorePage
 
         return StorePage(self.driver)
