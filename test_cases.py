@@ -1,30 +1,22 @@
-import pytest
-
 import utility_methods
+from pages.aboutPage import AboutPage
+from pages.gamePage import GamePage
 from pages.storePage import StorePage
+from pages.topSellersPage import TopSellersPage
 from singletonWebDriver import SingletonWebDriver
-
-
-@pytest.fixture()
-def driver_setup_teardown():
-    chrome_parameters = utility_methods.get_chrome_parameters_data()
-    driver = SingletonWebDriver.get_driver(chrome_parameters)
-    driver.get("https://store.steampowered.com/")
-    yield driver
-    driver.quit()
-    SingletonWebDriver.unassign_driver()
 
 
 def test_case1(driver_setup_teardown):
     driver = driver_setup_teardown
 
     # STEP1: Navigate to store page -> store page is open
-    store_page = StorePage(driver)
+    store_page = StorePage()
     error_message_step1 = "opening store page should result in store page being open"
     assert store_page.is_unique_element_present(), error_message_step1
 
     # STEP2: Click on ABOUT button -> About page is open
-    about_page = store_page.click_on_about_btn()
+    store_page.click_on_about_btn()
+    about_page = AboutPage()
     error_message_step2 = "opening about page should result in about page being open"
     assert about_page.is_unique_element_present(), error_message_step2
 
@@ -37,7 +29,8 @@ def test_case1(driver_setup_teardown):
     assert players_ingame < players_online, error_message_step3
 
     # STEP4: Click on STORE button -> Store page is open
-    store_page = about_page.click_on_store_btn()
+    about_page.click_on_store_btn()
+    store_page = StorePage()
     error_message_step4 = error_message_step1
     assert store_page.is_unique_element_present(), error_message_step4
 
@@ -46,13 +39,14 @@ def test_case2(driver_setup_teardown):
     driver = driver_setup_teardown
 
     # STEP1: Navigate to store page -> store page is open
-    store_page = StorePage(driver)
+    store_page = StorePage()
     error_message_step1 = "opening store page should result in store page being open"
     assert store_page.is_unique_element_present(), error_message_step1
 
     # STEP2: Move pointer to 'New & Noteworthy' at page's menu. Using explicit waits wait until popup menu shows up.
     # Click 'Top Sellers' option in that menu -> Page with Top Sellers products is open
-    top_sellers_page = store_page.click_on_topsellers_from_noteworthy_pulldown()
+    store_page.click_on_topsellers_from_noteworthy_pulldown()
+    top_sellers_page = TopSellersPage()
     error_message_step2 = (
         "opening top sellers page should result in top sellers page being open"
     )
@@ -85,7 +79,8 @@ def test_case2(driver_setup_teardown):
     # STEP7: click on the first game in the list ->
     # page with game's description is open
     # Game's data (name, release date and price) are equal to the ones from step #6
-    garrys_game_page = top_sellers_page.click_on_first_game_in_search_results()
+    top_sellers_page.click_on_first_game_in_search_results()
+    garrys_game_page = GamePage()
     error_message_step7a = (
         "opening game details page should result in game details page being open"
     )
