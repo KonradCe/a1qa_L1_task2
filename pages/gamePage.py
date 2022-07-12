@@ -14,17 +14,18 @@ class GamePage:
     )
 
     def is_unique_element_present(self):
-        unique_element_list = SWD.get_driver().find_elements(*self.UNIQUE_ELEMENT_LOC)
-        return len(unique_element_list) > 0
+        unique_element_list = SWD().get_driver().find_elements(*self.UNIQUE_ELEMENT_LOC)
+        return bool(unique_element_list)
 
     def get_game_data(self) -> dict:
-        game_title = SWD.get_driver().find_element(*self.GAME_TITLE_LOC).text
+        game_title = SWD().get_driver().find_element(*self.GAME_TITLE_LOC).text
         game_release_date = (
-            SWD.get_driver().find_element(*self.GAME_RELEASE_DATE_LOC).text
+            SWD().get_driver().find_element(*self.GAME_RELEASE_DATE_LOC).text
         )
 
         game_price_raw = (
-            SWD.get_driver()
+            SWD()
+            .get_driver()
             .find_element(*self.GAME_PRICE_LOC)
             .get_attribute("data-price-final")
         )

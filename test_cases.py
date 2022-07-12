@@ -99,4 +99,4 @@ if __name__ == "__main__":
         utility_methods.get_chrome_parameters_data()
     )
     main_driver.get("https://store.steampowered.com/")
-    test_case2(main_driver)
+    test_case1(main_driver)

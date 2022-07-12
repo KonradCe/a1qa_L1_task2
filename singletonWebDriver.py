@@ -4,8 +4,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 class Singleton(type):
-    def __init__(cls, *args, **kwargs):
-        cls.__instance = None
+    def __init__(self, *args, **kwargs):
+        self.__instance = None
         super().__init__(*args, **kwargs)
 
     def __call__(self, *args, **kwargs):
@@ -19,18 +19,16 @@ class Singleton(type):
 class SingletonWebDriver(metaclass=Singleton):
     __driver = None
 
-    @classmethod
-    def get_driver(cls, parameters=None):
-        if cls.__driver is None:
+    def get_driver(self, parameters=None):
+        if self.__driver is None:
             options = webdriver.ChromeOptions()
             if parameters is not None:
                 for p in parameters:
                     options.add_argument(p)
-            cls.__driver = webdriver.Chrome(
+            self.__driver = webdriver.Chrome(
                 service=ChromeService(ChromeDriverManager().install()), options=options
             )
-        return cls.__driver
+        return self.__driver
 
-    @classmethod
-    def unassign_driver(cls):
-        cls.__driver = None
+    def unassign_driver(self):
+        self.__driver = None
