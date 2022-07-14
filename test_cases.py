@@ -1,10 +1,10 @@
 import utility_methods
-from pages.aboutPage import AboutPage
-from pages.gamePage import GamePage
-from pages.storePage import StorePage
-from pages.topSellersPage import TopSellersPage
-from singleton_webdriver import SingletonWebDriver
 from browser_util import BrowserUtil
+from pages.about_page import AboutPage
+from pages.game_page import GamePage
+from pages.store_page import StorePage
+from pages.topsellers_page import TopSellersPage
+from singleton_webdriver import SingletonWebDriver
 
 
 def test_case1(driver_setup_teardown):
@@ -92,20 +92,10 @@ def test_case2(driver_setup_teardown):
     ), error_message_step7b
 
 
-def test_case3(driver_setup_teardown):
-    # STEP 1: navigate to main page -> main page is open
-    store_page = StorePage()
-    error_message_step1 = "opening store page should result in store page being open"
-    assert store_page.is_open(), error_message_step1
-
-    # STEP 2 - open Community Market page from dropdown menu -> Community Market page is open
-    
-
-
 # For debugging purpose only
 if __name__ == "__main__":
     main_driver = SingletonWebDriver().get_driver(
         utility_methods.get_chrome_parameters_data()
     )
     BrowserUtil.go_to_store_page()
-    test_case3(None)
+    test_case1(None)

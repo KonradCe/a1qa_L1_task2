@@ -1,8 +1,9 @@
+from typing import List
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from typing import List
 
 import utility_methods
 from singleton_webdriver import SingletonWebDriver as Swd
