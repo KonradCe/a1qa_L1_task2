@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 
 import utility_methods
-from singletonWebDriver import SingletonWebDriver as SWD
+from singleton_webdriver import SingletonWebDriver as Swd
 
 
 class AboutPage:
@@ -19,22 +19,22 @@ class AboutPage:
         "//div[@class='supernav_container']//a[@data-tooltip-content='.submenu_store']",
     )
 
-    def is_unique_element_present(self):
-        unique_element_list = SWD().get_driver().find_elements(*self.UNIQUE_ELEMENT_LOC)
+    def is_open(self):
+        unique_element_list = Swd.get_driver().find_elements(*self.UNIQUE_ELEMENT_LOC)
         return bool(unique_element_list)
 
     def get_players_online_nb(self):
-        players_online_obfuscated = (
-            SWD().get_driver().find_element(*self.PLAYERS_ONLINE_LOC)
+        players_online_obfuscated = Swd.get_driver().find_element(
+            *self.PLAYERS_ONLINE_LOC
         )
         return utility_methods.extract_nb_of_players(players_online_obfuscated)
 
     def get_players_ingame_nb(self):
-        players_ingame_obfuscated = (
-            SWD().get_driver().find_element(*self.PLAYERS_INGAME_LOC)
+        players_ingame_obfuscated = Swd.get_driver().find_element(
+            *self.PLAYERS_INGAME_LOC
         )
         return utility_methods.extract_nb_of_players(players_ingame_obfuscated)
 
     def click_on_store_btn(self):
-        store_button = SWD().get_driver().find_element(*self.STORE_BTN_LOC)
+        store_button = Swd.get_driver().find_element(*self.STORE_BTN_LOC)
         store_button.click()

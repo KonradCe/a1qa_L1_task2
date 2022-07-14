@@ -19,16 +19,18 @@ class Singleton(type):
 class SingletonWebDriver(metaclass=Singleton):
     __driver = None
 
-    def get_driver(self, parameters=None):
-        if self.__driver is None:
+    @classmethod
+    def get_driver(cls, parameters=None):
+        if cls.__driver is None:
             options = webdriver.ChromeOptions()
             if parameters is not None:
                 for p in parameters:
                     options.add_argument(p)
-            self.__driver = webdriver.Chrome(
+            cls.__driver = webdriver.Chrome(
                 service=ChromeService(ChromeDriverManager().install()), options=options
             )
-        return self.__driver
+        return cls.__driver
 
-    def unassign_driver(self):
-        self.__driver = None
+    @classmethod
+    def unassign_driver(cls):
+        cls.__driver = None

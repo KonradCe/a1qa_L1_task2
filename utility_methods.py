@@ -1,18 +1,12 @@
 import json
 
 
+# methods to fetch CONFIG data
 def get_chrome_parameters_data() -> list:
     with open("data/config_data.json") as f:
         j = json.load(f)
         chrome_parameters = [*j["chrome_options"]]
     return chrome_parameters
-
-
-def get_filter_checkboxes_data() -> dict:
-    with open("data/test_data.json") as f:
-        j = json.load(f)
-
-    return j["filter_checkbox_data_values"]
 
 
 def get_wait_time_data():
@@ -22,6 +16,22 @@ def get_wait_time_data():
     return int(j["explicit_wait_time"])
 
 
+# methods to fetch TEST data
+def get_filter_checkboxes_data() -> dict:
+    with open("data/test_data.json") as f:
+        j = json.load(f)
+
+    return j["filter_checkbox_data_values"]
+
+
+def get_store_url():
+    with open("data/test_data.json") as f:
+        j = json.load(f)
+
+    return j["store_page_URL"]
+
+
+# the rest of utility methods
 def extract_nb_of_players(obfuscated_string) -> int:
     return int(obfuscated_string.text.split("\n")[1].replace(",", ""))
 

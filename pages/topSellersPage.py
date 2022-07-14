@@ -5,7 +5,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from typing import List
 
 import utility_methods
-from singletonWebDriver import SingletonWebDriver as SWD
+from singleton_webdriver import SingletonWebDriver as Swd
 
 
 class TopSellersPage:
@@ -39,20 +39,20 @@ class TopSellersPage:
     def __init__(self):
         self.wait_time = utility_methods.get_wait_time_data()
 
-    def is_unique_element_present(self):
-        unique_element_list = SWD().get_driver().find_elements(*self.UNIQUE_ELEMENT_LOC)
+    def is_open(self):
+        unique_element_list = Swd.get_driver().find_elements(*self.UNIQUE_ELEMENT_LOC)
         return bool(unique_element_list)
 
     def display_all_checkboxes(self):
-        category_headers_to_click: List[WebElement] = (
-            SWD().get_driver().find_elements(*self.COLLAPSED_CATEGORY_HEADERS_LOC)
+        category_headers_to_click: List[WebElement] = Swd.get_driver().find_elements(
+            *self.COLLAPSED_CATEGORY_HEADERS_LOC
         )
         # Unraveling categories from top to bottom, causes every category below the one being unravelled to move down.
         # As a result the remaining clicks do not hit their targets, which throws an error. By reversing the list, we
         # unravel from the bottom to the top, which does not cause any shifts in the layout of categories yet to be clicked.
         category_headers_to_click.reverse()
         for header in category_headers_to_click:
-            wait = WebDriverWait(SWD().get_driver(), self.wait_time)
+            wait = WebDriverWait(Swd.get_driver(), self.wait_time)
             wait.until(EC.element_to_be_clickable(header))
             header.click()
 
@@ -60,17 +60,17 @@ class TopSellersPage:
         for chk in required_checkboxes.values():
             chk_loc = f"//span[@data-value='{chk}']"
             self.wait_for_search_results()
-            SWD().get_driver().find_element(By.XPATH, chk_loc).click()
+            Swd.get_driver().find_element(By.XPATH, chk_loc).click()
 
     def get_data_values_of_checked_checkboxes(self):
-        checked_checkboxes = (
-            SWD().get_driver().find_elements(*self.CHECKED_CHECKBOXES_LOC)
+        checked_checkboxes = Swd.get_driver().find_elements(
+            *self.CHECKED_CHECKBOXES_LOC
         )
         return [element.get_attribute("data-value") for element in checked_checkboxes]
 
     def get_number_of_results(self):
         self.wait_for_search_results()
-        wait = WebDriverWait(SWD().get_driver(), self.wait_time)
+        wait = WebDriverWait(Swd.get_driver(), self.wait_time)
         number_of_results = wait.until(
             EC.presence_of_element_located(self.SEARCH_RESULT_TEXT_LOC)
         )
@@ -78,13 +78,13 @@ class TopSellersPage:
 
     def count_number_of_results(self):
         self.wait_for_search_results()
-        search_result_rows = (
-            SWD().get_driver().find_elements(*self.SEARCH_RESULT_ROWS_LOC)
+        search_result_rows = Swd.get_driver().find_elements(
+            *self.SEARCH_RESULT_ROWS_LOC
         )
         return len(search_result_rows)
 
     def wait_for_search_results(self):
-        wait = WebDriverWait(SWD().get_driver(), self.wait_time)
+        wait = WebDriverWait(Swd.get_driver(), self.wait_time)
         # Using only one wait was insufficient,worked only around 50% of the time
         wait.until(
             EC.presence_of_element_located(
@@ -97,8 +97,8 @@ class TopSellersPage:
 
     def get_data_from_first_game_in_search_results(self):
         self.wait_for_search_results()  # You never know from where this method may be called
-        first_game_from_search_results = (
-            SWD().get_driver().find_element(*self.FIRST_GAME_IN_SEARCH_RESULTS_LOC)
+        first_game_from_search_results = Swd.get_driver().find_element(
+            *self.FIRST_GAME_IN_SEARCH_RESULTS_LOC
         )
         return self.get_game_data_from_row(first_game_from_search_results)
 
@@ -123,7 +123,7 @@ class TopSellersPage:
 
     def click_on_first_game_in_search_results(self):
         self.wait_for_search_results()
-        first_game_from_search_results = (
-            SWD().get_driver().find_element(*self.FIRST_GAME_IN_SEARCH_RESULTS_LOC)
+        first_game_from_search_results = Swd.get_driver().find_element(
+            *self.FIRST_GAME_IN_SEARCH_RESULTS_LOC
         )
         first_game_from_search_results.click()

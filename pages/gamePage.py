@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 
 import utility_methods
-from singletonWebDriver import SingletonWebDriver as SWD
+from singleton_webdriver import SingletonWebDriver as Swd
 
 
 class GamePage:
@@ -13,19 +13,18 @@ class GamePage:
         "//div[@class='game_area_purchase_game']//div[@data-price-final]",
     )
 
-    def is_unique_element_present(self):
-        unique_element_list = SWD().get_driver().find_elements(*self.UNIQUE_ELEMENT_LOC)
+    def is_open(self):
+        unique_element_list = Swd.get_driver().find_elements(*self.UNIQUE_ELEMENT_LOC)
         return bool(unique_element_list)
 
     def get_game_data(self) -> dict:
-        game_title = SWD().get_driver().find_element(*self.GAME_TITLE_LOC).text
+        game_title = Swd.get_driver().find_element(*self.GAME_TITLE_LOC).text
         game_release_date = (
-            SWD().get_driver().find_element(*self.GAME_RELEASE_DATE_LOC).text
+            Swd.get_driver().find_element(*self.GAME_RELEASE_DATE_LOC).text
         )
 
         game_price_raw = (
-            SWD()
-            .get_driver()
+            Swd.get_driver()
             .find_element(*self.GAME_PRICE_LOC)
             .get_attribute("data-price-final")
         )

@@ -3,22 +3,22 @@ from pages.aboutPage import AboutPage
 from pages.gamePage import GamePage
 from pages.storePage import StorePage
 from pages.topSellersPage import TopSellersPage
-from singletonWebDriver import SingletonWebDriver
+from singleton_webdriver import SingletonWebDriver
+from browser_util import BrowserUtil
 
 
 def test_case1(driver_setup_teardown):
-    driver = driver_setup_teardown
 
     # STEP1: Navigate to store page -> store page is open
     store_page = StorePage()
     error_message_step1 = "opening store page should result in store page being open"
-    assert store_page.is_unique_element_present(), error_message_step1
+    assert store_page.is_open(), error_message_step1
 
     # STEP2: Click on ABOUT button -> About page is open
     store_page.click_on_about_btn()
     about_page = AboutPage()
     error_message_step2 = "opening about page should result in about page being open"
-    assert about_page.is_unique_element_present(), error_message_step2
+    assert about_page.is_open(), error_message_step2
 
     # STEP3: Compare number of players online and in-game -> Number of in-game players is less than number of players online
     players_online = about_page.get_players_online_nb()
@@ -32,16 +32,15 @@ def test_case1(driver_setup_teardown):
     about_page.click_on_store_btn()
     store_page = StorePage()
     error_message_step4 = error_message_step1
-    assert store_page.is_unique_element_present(), error_message_step4
+    assert store_page.is_open(), error_message_step4
 
 
 def test_case2(driver_setup_teardown):
-    driver = driver_setup_teardown
 
     # STEP1: Navigate to store page -> store page is open
     store_page = StorePage()
     error_message_step1 = "opening store page should result in store page being open"
-    assert store_page.is_unique_element_present(), error_message_step1
+    assert store_page.is_open(), error_message_step1
 
     # STEP2: Move pointer to 'New & Noteworthy' at page's menu. Using explicit waits wait until popup menu shows up.
     # Click 'Top Sellers' option in that menu -> Page with Top Sellers products is open
@@ -50,7 +49,7 @@ def test_case2(driver_setup_teardown):
     error_message_step2 = (
         "opening top sellers page should result in top sellers page being open"
     )
-    assert top_sellers_page.is_unique_element_present(), error_message_step2
+    assert top_sellers_page.is_open(), error_message_step2
 
     # STEP3: In menu on the right choose 'Action', 'LAN Co-op' and 'SteamOS + Linux' checkboxes ->
     # All three checkboxes are checked
@@ -84,7 +83,7 @@ def test_case2(driver_setup_teardown):
     error_message_step7a = (
         "opening game details page should result in game details page being open"
     )
-    assert garrys_game_page.is_unique_element_present(), error_message_step7a
+    assert garrys_game_page.is_open(), error_message_step7a
 
     game_data_from_game_page = garrys_game_page.get_game_data()
     error_message_step7b = "one game should have the same title, release date and price on search results page and on game details page"
@@ -93,10 +92,20 @@ def test_case2(driver_setup_teardown):
     ), error_message_step7b
 
 
+def test_case3(driver_setup_teardown):
+    # STEP 1: navigate to main page -> main page is open
+    store_page = StorePage()
+    error_message_step1 = "opening store page should result in store page being open"
+    assert store_page.is_open(), error_message_step1
+
+    # STEP 2 - open Community Market page from dropdown menu -> Community Market page is open
+    
+
+
 # For debugging purpose only
 if __name__ == "__main__":
     main_driver = SingletonWebDriver().get_driver(
         utility_methods.get_chrome_parameters_data()
     )
-    main_driver.get("https://store.steampowered.com/")
-    test_case1(main_driver)
+    BrowserUtil.go_to_store_page()
+    test_case3(None)
