@@ -1,8 +1,22 @@
 {
-  "filter_checkbox_data_values": {
-    "Action": "19",
-    "LAN Co-op": "48",
-    "SteamOS + Linux": "linux"
+  "store_page_URL": "https://store.steampowered.com/",
+
+  "case2_data": {
+    "filter_checkbox_data_values": {
+      "Action": "19",
+      "LAN Co-op": "48",
+      "SteamOS + Linux": "linux"
+    }
   },
-  "store_page_URL": "https://store.steampowered.com/"
+
+  "case3_data": {
+    "advance_search_params": {
+      "Game": {
+        "Dota 2": 570
+      },
+      "Hero": "Lifestealer",
+      "Rarity": "Immortal",
+      "search_for": "golden"
+    }
+  }
 }

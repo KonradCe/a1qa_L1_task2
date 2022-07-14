@@ -15,6 +15,8 @@ class StorePage:
     UNIQUE_ELEMENT_LOC = (By.XPATH, "//div[@class='home_page_content']")
     NOTEWORTHY_BTN_LOC = (By.XPATH, "//div[@id='noteworthy_tab']")
     TOPSELLERS_BTN_LOC = (By.XPATH, "//a[contains(@href,'topsellers')]")
+    COMMUNITY_BTN_LOC = (By.XPATH, "//div[@id='global_header']//a[@data-tooltip-content='.submenu_community']")
+    COMMUNITY_MARKET_BTN_LOC = (By.XPATH, "//div[@id='global_header']//a[contains(@href, 'market')]")
 
     def __init__(self):
         self.wait_time = utility_methods.get_wait_time_data()
@@ -40,3 +42,15 @@ class StorePage:
         wait = WebDriverWait(Swd.get_driver(), self.wait_time)
         topsellers_btn = wait.until(EC.element_to_be_clickable(self.TOPSELLERS_BTN_LOC))
         topsellers_btn.click()
+
+    def click_on_market_from_community_pulldown(self):
+        community_btn = Swd.get_driver().find_element(*self.COMMUNITY_BTN_LOC)
+        hover_over_community_btn = ActionChains(Swd.get_driver()).move_to_element(
+            community_btn
+        )
+        hover_over_community_btn.perform()
+
+        wait = WebDriverWait(Swd.get_driver(), self.wait_time)
+        market_btn = wait.until(EC.element_to_be_clickable(self.COMMUNITY_MARKET_BTN_LOC))
+        market_btn.click()
+

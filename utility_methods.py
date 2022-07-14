@@ -17,19 +17,25 @@ def get_wait_time_data():
 
 
 # methods to fetch TEST data
-def get_filter_checkboxes_data() -> dict:
-    with open("data/test_data.json") as f:
-        j = json.load(f)
-
-    return j["filter_checkbox_data_values"]
-
-
 def get_store_url():
     with open("data/test_data.json") as f:
         j = json.load(f)
 
     return j["store_page_URL"]
 
+
+def get_filter_checkboxes_data() -> dict:
+    with open("data/test_data.json") as f:
+        j = json.load(f)
+
+    return j["case2_data"]["filter_checkbox_data_values"]
+
+
+def get_advance_search_params() -> dict:
+    with open("data/test_data.json") as f:
+        j = json.load(f)
+
+    return j["case3_data"]["advance_search_params"]
 
 # the rest of utility methods
 def extract_nb_of_players(obfuscated_string) -> int:

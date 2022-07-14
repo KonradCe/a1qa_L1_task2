@@ -1,8 +1,9 @@
 import utility_methods
-from pages.aboutPage import AboutPage
-from pages.gamePage import GamePage
-from pages.storePage import StorePage
-from pages.topSellersPage import TopSellersPage
+from pages.about_page import AboutPage
+from pages.game_page import GamePage
+from pages.store_page import StorePage
+from pages.community_market_page import CommunityMarketPage
+from pages.topsellers_page import TopSellersPage
 from singleton_webdriver import SingletonWebDriver
 from browser_util import BrowserUtil
 
@@ -99,7 +100,21 @@ def test_case3(driver_setup_teardown):
     assert store_page.is_open(), error_message_step1
 
     # STEP 2 - open Community Market page from dropdown menu -> Community Market page is open
-    
+    store_page.click_on_market_from_community_pulldown()
+    community_market_page = CommunityMarketPage()
+    error_message_step2 = "opening community market page should result in community market page being open"
+    assert community_market_page.is_open(), error_message_step2
+
+    # STEP 3 - click "Show advanced options" in the right menu -> 'SEARCH COMMUNITY MARKET' window is open
+    community_market_page.click_on_show_adv_opt_btn()
+    error_message_step3 = "clicking on advance search button, should result in advanced search menu being open"
+    assert community_market_page.is_adv_search_open(), error_message_step3
+
+    # STEP 4 - enter parameters in search form
+    community_market_page.fill_advance_search_params()
+
+    # STEP
+    community_market_page.click_on_advance_search_btn()
 
 
 # For debugging purpose only
